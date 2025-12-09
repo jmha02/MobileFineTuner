@@ -1,0 +1,73 @@
+# Build directories
+build/
+build_*/
+operators/build/
+operators/build_*/
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+CTestTestfile.cmake
+cmake_install.cmake
+
+# Object files and libraries
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Model weights and data (too large for GitHub)
+gemma-3-270m/
+gemma-3-1b/
+gpt2_lora_finetune/pretrained/
+data/wikitext2/
+data/pretokenized/
+data/mmlu/data.tar
+data/mmlu/data/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Training outputs
+runs/
+pytorch_runs/
+*.log
+*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pt_env/
+ENV/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.coverage
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# Large test files
+*.npy
+
