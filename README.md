@@ -1,9 +1,3 @@
-<div align="center">
-  <img src="logo.jpg" alt="Duke University & Duke Kunshan University" width="600"/>
-</div>
-
-<br>
-
 # MobileFineTuner
 
 **A Unified End-to-End Framework for Fine-Tuning LLMs on Mobile Phones**
@@ -514,3 +508,9 @@ limitations under the License.
 ---
 
 **Built with passion for privacy-preserving mobile AI**
+
+<br>
+
+<div align="center">
+  <img src="logo.jpg" alt="Duke University & Duke Kunshan University" width="250"/>
+</div>
