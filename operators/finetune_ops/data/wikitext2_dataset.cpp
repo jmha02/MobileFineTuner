@@ -213,7 +213,7 @@ void WikiText2Dataset::build_chunk_indices(const std::vector<int32_t>& ids) {
      pretokenized_mode_ = !cfg_.pretokenized_path.empty();
  
      if (pretokenized_mode_) {
-         cfg_.streaming_mode = false;  // 预分词模式直接驻留所需切片
+        cfg_.streaming_mode = false;  // Pretokenized mode keeps required shards resident.
          ensure_pretokenized_meta_loaded();
          load_pretokenized_split(split);
          if (split == Split::Train && cfg_.shuffle_train) {

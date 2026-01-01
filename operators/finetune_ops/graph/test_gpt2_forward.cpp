@@ -69,7 +69,7 @@ int main() {
         
         // 2. Load weights
         std::cout << "\n[1/5] Loading weights from safetensors..." << std::endl;
-        SafeTensorsReader reader("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
+        SafeTensorsReader reader("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
         reader.parse_header();
         
         auto key_map = GPT2KeyMapper::generate_gpt2_mapping(cfg.n_layer);
@@ -190,7 +190,7 @@ int main() {
         
         // 5. Load PyTorch gold standard and compare
         std::cout << "\n[4/5] Loading PyTorch gold standard..." << std::endl;
-        auto pt_logits = load_json_array("/Users/tony/Documents/重新开始/operators/finetune_ops/graph/pt_last_logits.json");
+        auto pt_logits = load_json_array("/Users/tony/Documents/restart/operators/finetune_ops/graph/pt_last_logits.json");
         
         if (pt_logits.size() != static_cast<size_t>(vocab_size)) {
             std::cerr << "ERROR: PyTorch logits size mismatch: " << pt_logits.size()

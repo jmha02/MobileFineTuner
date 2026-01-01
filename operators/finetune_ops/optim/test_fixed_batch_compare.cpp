@@ -21,13 +21,13 @@ int main() {
         
         // 1. Prepare tokenizer and dataset
         std::cout << "[1/5] Loading tokenizer and data..." << std::endl;
-        auto tok_cfg = BPEConfig::from_pretrained("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2");
+        auto tok_cfg = BPEConfig::from_pretrained("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2");
         GPT2BPETokenizer tokenizer(tok_cfg);
         tokenizer.load();
         
         WT2Config data_cfg;
-        data_cfg.train_path = "/Users/tony/Documents/重新开始/data/wikitext2/wikitext-2-raw/wiki.train.raw";
-        data_cfg.valid_path = "/Users/tony/Documents/重新开始/data/wikitext2/wikitext-2-raw/wiki.valid.raw";
+        data_cfg.train_path = "/Users/tony/Documents/restart/data/wikitext2/wikitext-2-raw/wiki.train.raw";
+        data_cfg.valid_path = "/Users/tony/Documents/restart/data/wikitext2/wikitext-2-raw/wiki.valid.raw";
         data_cfg.seq_len = 128;
         data_cfg.stride = -1;
         data_cfg.seed = 2025;  // Fixed seed
@@ -53,7 +53,7 @@ int main() {
         GPT2Model baseline_model(cfg);
         baseline_model.tie_weights();
         
-        SafeTensorsReader reader("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
+        SafeTensorsReader reader("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
         reader.parse_header();
         auto key_map = GPT2KeyMapper::generate_gpt2_mapping(cfg.n_layer);
         
@@ -82,7 +82,7 @@ int main() {
         lora_model.tie_weights();
         
         // Reload weights
-        SafeTensorsReader reader2("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
+        SafeTensorsReader reader2("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
         reader2.parse_header();
         for (const auto& [internal_key, hf_key] : key_map) {
             try {

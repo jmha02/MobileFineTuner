@@ -9,8 +9,8 @@ from transformers import GPT2TokenizerFast, GPT2LMHeadModel
 
 def main():
     # Load pretrained model (disable dropout)
-    tok = GPT2TokenizerFast.from_pretrained("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2")
-    model = GPT2LMHeadModel.from_pretrained("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2")
+    tok = GPT2TokenizerFast.from_pretrained("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2")
+    model = GPT2LMHeadModel.from_pretrained("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2")
     model.eval()
     
     # Fixed input
@@ -34,7 +34,7 @@ def main():
     print(f"PyTorch top-5 vals: {[f'{v:.6f}' for v in topv.tolist()]}")
     
     # Save as JSON (for C++ reading)
-    output_path = "/Users/tony/Documents/重新开始/operators/finetune_ops/graph/pt_last_logits.json"
+    output_path = "/Users/tony/Documents/restart/operators/finetune_ops/graph/pt_last_logits.json"
     with open(output_path, "w") as f:
         json.dump(last_logits.tolist(), f)
     

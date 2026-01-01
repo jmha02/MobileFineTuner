@@ -14,7 +14,7 @@ int main() {
         
         // 1. Initialize tokenizer
         std::cout << "[1/4] Loading tokenizer..." << std::endl;
-        auto tok_cfg = BPEConfig::from_pretrained("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2");
+        auto tok_cfg = BPEConfig::from_pretrained("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2");
         GPT2BPETokenizer tokenizer(tok_cfg);
         tokenizer.load();
         std::cout << "Tokenizer loaded" << std::endl;
@@ -22,9 +22,9 @@ int main() {
         // 2. Configure Dataset
         std::cout << "\n[2/4] Configuring dataset..." << std::endl;
         WT2Config cfg;
-        cfg.train_path = "/Users/tony/Documents/重新开始/data/wikitext2/wikitext-2-raw/wiki.train.raw";
-        cfg.valid_path = "/Users/tony/Documents/重新开始/data/wikitext2/wikitext-2-raw/wiki.valid.raw";
-        cfg.test_path = "/Users/tony/Documents/重新开始/data/wikitext2/wikitext-2-raw/wiki.test.raw";
+        cfg.train_path = "/Users/tony/Documents/restart/data/wikitext2/wikitext-2-raw/wiki.train.raw";
+        cfg.valid_path = "/Users/tony/Documents/restart/data/wikitext2/wikitext-2-raw/wiki.valid.raw";
+        cfg.test_path = "/Users/tony/Documents/restart/data/wikitext2/wikitext-2-raw/wiki.test.raw";
         cfg.seq_len = 128;     // Short sequence for testing
         cfg.stride = -1;       // No overlap
         cfg.drop_last = true;

@@ -24,7 +24,7 @@ int main() {
         GPT2Model model(cfg);
         model.tie_weights();
         
-        SafeTensorsReader reader("/Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
+        SafeTensorsReader reader("/Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2/model.safetensors");
         reader.parse_header();
         auto key_map = GPT2KeyMapper::generate_gpt2_mapping(cfg.n_layer);
         

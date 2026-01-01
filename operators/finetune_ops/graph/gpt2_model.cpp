@@ -612,7 +612,7 @@ TensorPtr GPT2Model::forward_block(const TensorPtr& x_in,
          printf("[DEBUG] Layer 11 QKV output (before split): mean=%10.6f, std=%10.6f\n", mean, std);
      }
      
-     // 切分 Q/K/V（顺序：q, k, v）
+     // Split Q/K/V (order: q, k, v)
      const float* qkv_data = qkv->data<float>();
      
      auto q = zeros({B, S, C}, kFloat32, kCPU);

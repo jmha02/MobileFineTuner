@@ -110,7 +110,7 @@ void test_key_mapping() {
 int main(int argc, char** argv) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <path_to_model.safetensors>" << std::endl;
-        std::cerr << "  Example: " << argv[0] << " /Users/tony/Documents/重新开始/gpt2_lora_finetune/pretrained/gpt2/model.safetensors" << std::endl;
+        std::cerr << "  Example: " << argv[0] << " /Users/tony/Documents/restart/gpt2_lora_finetune/pretrained/gpt2/model.safetensors" << std::endl;
         return 1;
     }
     
