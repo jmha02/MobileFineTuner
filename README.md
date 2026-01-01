@@ -87,12 +87,44 @@ make -j$(nproc)
 
 Download WikiText-2 dataset and pretrained model:
 ```bash
-# WikiText-2 raw text files
-mkdir -p data/wikitext2/wikitext-2-raw
-# Place wiki.train.raw, wiki.valid.raw, wiki.test.raw in the above directory
+# WikiText-2 raw text files (from HuggingFace parquet)
+python3 -m pip install --user pyarrow
+mkdir -p data/wikitext2/wikitext-2-raw data/wikitext2/wikitext-2-raw-parquet
+for split in train validation test; do
+  curl -L -o "data/wikitext2/wikitext-2-raw-parquet/${split}-00000-of-00001.parquet" \
+    "https://huggingface.co/datasets/Salesforce/wikitext/resolve/main/wikitext-2-raw-v1/${split}-00000-of-00001.parquet"
+done
+python3 - <<'PY'
+from pathlib import Path
+import pyarrow.parquet as pq
+
+root = Path("data/wikitext2")
+parquet_dir = root / "wikitext-2-raw-parquet"
+out_dir = root / "wikitext-2-raw"
+
+splits = {
+    "train": "wiki.train.raw",
+    "validation": "wiki.valid.raw",
+    "test": "wiki.test.raw",
+}
+
+for split, out_name in splits.items():
+    parquet_path = parquet_dir / f"{split}-00000-of-00001.parquet"
+    table = pq.read_table(parquet_path, columns=["text"])
+    out_path = out_dir / out_name
+    with out_path.open("w", encoding="utf-8") as f:
+        for text in table.column("text").to_pylist():
+            f.write(text)
+            f.write("\n")
+PY
+rm -rf data/wikitext2/wikitext-2-raw-parquet
 
 # GPT-2 pretrained weights (HuggingFace format)
-# Place in gpt2_lora_finetune/pretrained/gpt2/
+mkdir -p gpt2_lora_finetune/pretrained/gpt2
+for f in config.json merges.txt vocab.json tokenizer.json tokenizer_config.json pytorch_model.bin; do
+  curl -L -o "gpt2_lora_finetune/pretrained/gpt2/${f}" \
+    "https://huggingface.co/gpt2/resolve/main/${f}"
+done
 ```
 
 ### 2. Run LoRA Fine-Tuning
