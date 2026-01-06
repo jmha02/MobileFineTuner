@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <cstring>
 #include <stdexcept>
+#include <string>
 
 namespace ops {
 
@@ -75,4 +76,3 @@ public:
 StepArena& get_step_arena();
 
 } // namespace ops
-

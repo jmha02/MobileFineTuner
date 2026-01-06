@@ -10,6 +10,7 @@
 #include "../core/performance_monitor.h"
 #include "../core/memory_manager.h"
 #include <iostream>
+#include <chrono>
 #include <cmath>
 #include <algorithm>
 
@@ -178,23 +179,57 @@ void LoRATrainer::train() {
         train_data_.reset_cursor();
         float epoch_loss = 0.0f;
         int num_batches = 0;
+        double window_tokens = 0.0;
+        double window_samples = 0.0;
+        double window_loss = 0.0;
+        int window_steps = 0;
+        auto last_log_time = std::chrono::steady_clock::now();
         
         while (true) {
             auto batch = train_data_.next_batch(config_.gradient_accumulation_steps, false);
             if (!batch.input_ids) break;  // Epoch finished
             
             float loss = train_step(batch);
+            
+            const auto& shape = batch.input_ids->shape();
+            int64_t batch_size = shape.empty() ? 0 : shape[0];
+            int64_t seq_len = shape.size() > 1 ? shape[1] : 0;
+            double tokens_this_step = static_cast<double>(batch_size) * static_cast<double>(seq_len);
+            
             epoch_loss += loss;
             num_batches++;
+            
+            window_tokens += tokens_this_step;
+            window_samples += static_cast<double>(batch_size);
+            window_loss += static_cast<double>(loss);
+            window_steps++;
             
             // Logging
             if (global_step_ % config_.logging_steps == 0) {
                 float current_lr = get_lr(global_step_);
                 float ppl = perplexity_from_loss(loss);
+                
+                auto now = std::chrono::steady_clock::now();
+                double window_sec = std::max(1e-6, std::chrono::duration_cast<std::chrono::microseconds>(now - last_log_time).count() / 1e6);
+                double tok_per_sec = window_tokens / window_sec;
+                double seq_per_sec = window_samples / window_sec;
+                double mean_loss = window_steps > 0 ? (window_loss / window_steps) : 0.0;
+                double ms_per_step = (window_sec * 1000.0) / std::max(1, window_steps);
+                
                 std::cout << "[Step " << global_step_ << "] "
-                          << "Loss: " << loss << ", "
+                          << "Loss: " << loss << " (avg " << mean_loss << "), "
                           << "PPL: " << ppl << ", "
-                          << "LR: " << current_lr << std::endl;
+                          << "LR: " << current_lr << ", "
+                          << "Throughput: " << tok_per_sec << " tok/s, "
+                          << seq_per_sec << " seq/s, "
+                          << "Step time: " << ms_per_step << " ms" << std::endl;
+                
+                // Reset window accumulators
+                window_tokens = 0.0;
+                window_samples = 0.0;
+                window_loss = 0.0;
+                window_steps = 0;
+                last_log_time = now;
             }
             
             // Evaluation
@@ -235,4 +270,3 @@ void LoRATrainer::save_lora(const std::string& path) {
 }
 
 }  // namespace ops
-

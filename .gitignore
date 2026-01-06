@@ -1,6 +1,7 @@
 # Build directories
 build/
 build_*/
+android-build/
 operators/build/
 operators/build_*/
 *.cmake
